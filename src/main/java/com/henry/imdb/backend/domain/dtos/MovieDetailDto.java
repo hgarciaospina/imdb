@@ -13,8 +13,8 @@ import java.util.List;
 @AllArgsConstructor
 
 public class MovieDetailDto {
-
     private String title;
+    private String synopsis;
     private Integer releaseYear;
     private Integer rating;
     List<DirectorDto> directors;
