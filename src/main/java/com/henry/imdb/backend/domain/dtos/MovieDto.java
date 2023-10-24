@@ -9,9 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-
 public class MovieDto {
-
     private String title;
     private Integer releaseYear;
     private Integer rating;

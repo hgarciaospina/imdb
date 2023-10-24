@@ -1,14 +1,12 @@
 package com.henry.imdb.backend.domain.models;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 
@@ -22,5 +20,4 @@ public class Movie {
     private List<Director> directors;
     private List<Cast> casts;
     private List<Genre> genres;
-
 }
