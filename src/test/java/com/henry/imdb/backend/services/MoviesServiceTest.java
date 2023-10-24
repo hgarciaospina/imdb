@@ -10,34 +10,24 @@ import com.henry.imdb.backend.domain.dtos.MovieUpdateDto;
 import com.henry.imdb.backend.domain.exceptions.AppException;
 import com.henry.imdb.backend.domain.mappers.GenreMapper;
 import com.henry.imdb.backend.domain.mappers.MovieMapper;
-import com.henry.imdb.backend.domain.models.Cast;
-import com.henry.imdb.backend.domain.models.Director;
-import com.henry.imdb.backend.domain.models.Genre;
 import com.henry.imdb.backend.domain.models.Movie;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 
 import java.util.List;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 class MoviesServiceTest {
-
+    @InjectMocks
     private MoviesService moviesService;
+    @Mock
     private MovieMapper movieMapper;
+    @Mock
     private GenreMapper genreMapper;
-
-    @BeforeEach
-    public void setUp() {
-        // Mock MovieMapper
-        movieMapper = mock(MovieMapper.class);
-        // Mock GenreMapper
-        genreMapper = mock(GenreMapper.class);
-        // Initialize MovieService with the MovieMapper mock
-        moviesService = new MoviesService(movieMapper, genreMapper);
-    }
-
     @Test
     void allMovies() {
         // Configure the behavior of the MovieMapper mock

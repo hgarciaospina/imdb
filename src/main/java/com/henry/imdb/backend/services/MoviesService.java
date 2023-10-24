@@ -11,8 +11,6 @@ import com.henry.imdb.backend.domain.models.Cast;
 import com.henry.imdb.backend.domain.models.Director;
 import com.henry.imdb.backend.domain.models.Genre;
 import com.henry.imdb.backend.domain.models.Movie;
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -20,21 +18,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Getter
-@Setter
 @Service
 public class MoviesService {
 
     private final MovieMapper movieMapper;
     private final GenreMapper genreMapper;
-    private List<Director> directors1 = new ArrayList<>();
-    private List<Director> directors2 = new ArrayList<>();
-    private List<Director> directors3 = new ArrayList<>();
-    private List<Director> directors4 = new ArrayList<>();
-    private List<Cast> casts1 = new ArrayList<>();
-    private List<Cast> casts2 = new ArrayList<>();
-    private List<Cast> casts3 = new ArrayList<>();
-    private List<Cast> casts4 = new ArrayList<>();
+    private final List<Director> directors1 = new ArrayList<>();
+    private final List<Director> directors2 = new ArrayList<>();
+    private final List<Director> directors3 = new ArrayList<>();
+    private final List<Director> directors4 = new ArrayList<>();
+    private final List<Cast> casts1 = new ArrayList<>();
+    private final List<Cast> casts2 = new ArrayList<>();
+    private final List<Cast> casts3 = new ArrayList<>();
+    private final List<Cast> casts4 = new ArrayList<>();
     private List<Genre> genres1 = new ArrayList<>();
     private List<Genre> genres2 = new ArrayList<>();
     private List<Genre> genres3 = new ArrayList<>();
@@ -149,22 +145,6 @@ public class MoviesService {
         if (movieCreateDto == null) {
             throw new AppException(" Movie data cannot be empty ", HttpStatus.BAD_REQUEST);
         }
-        if (movieCreateDto.getTitle() == null)
-            throw new AppException("The movie must have a title ", HttpStatus.BAD_REQUEST);
-        if (movieCreateDto.getTitle().isEmpty())
-            throw new AppException("The movie must have a title ", HttpStatus.BAD_REQUEST);
-        if (movieCreateDto.getTitle().isBlank())
-            throw new AppException("The movie must have a title ", HttpStatus.BAD_REQUEST);
-        if (movieCreateDto.getSynopsis() == null)
-            throw new AppException("The movie must have a synopsis ", HttpStatus.BAD_REQUEST);
-        if (movieCreateDto.getSynopsis().isEmpty())
-            throw new AppException("The movie must have a synopsis ", HttpStatus.BAD_REQUEST);
-        if (movieCreateDto.getSynopsis().isBlank())
-            throw new AppException("The movie must have a synopsis ", HttpStatus.BAD_REQUEST);
-        if (movieCreateDto.getReleaseYear().toString().isBlank())
-            throw new AppException("The movie must have a release year ", HttpStatus.BAD_REQUEST);
-        if (movieCreateDto.getRating().toString().isEmpty())
-            throw new AppException("The movie must have a release year ", HttpStatus.BAD_REQUEST);
         if (movieCreateDto.getDirectors().isEmpty())
             throw new AppException("At least one director of the film must enter ", HttpStatus.BAD_REQUEST);
         if (movieCreateDto.getCasts().isEmpty())
@@ -173,13 +153,10 @@ public class MoviesService {
             throw new AppException("You must enter at least one genre of the movie ", HttpStatus.BAD_REQUEST);
         if (movieCreateDto.getCasts().size() > 5)
             throw new AppException("You can only add up to 5 actors ", HttpStatus.BAD_REQUEST);
-        if ((movieCreateDto.getRating() < 1) || (movieCreateDto.getRating() > 5))
-            throw new AppException("The rating must be a number between 1 and 5. ", HttpStatus.BAD_REQUEST);
-
-        searchMovieWithTitleAndYear(movieCreateDto);
+        existMovieWithTitleAndYear(movieCreateDto);
     }
 
-    private void searchMovieWithTitleAndYear(MovieCreateDto movieCreateDto) {
+    private void existMovieWithTitleAndYear(MovieCreateDto movieCreateDto) {
         movies.stream()
                 .filter(movie -> movie.getTitle().equals(movieCreateDto.getTitle())
                         && movie.getReleaseYear().equals(movieCreateDto.getReleaseYear()))

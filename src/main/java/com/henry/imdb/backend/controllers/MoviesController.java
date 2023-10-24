@@ -5,10 +5,10 @@ import com.henry.imdb.backend.domain.dtos.MovieDetailDto;
 import com.henry.imdb.backend.domain.dtos.MovieDto;
 import com.henry.imdb.backend.domain.dtos.MovieUpdateDto;
 import com.henry.imdb.backend.services.MoviesService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
@@ -31,6 +31,7 @@ public class MoviesController {
     @PatchMapping("/movies/{id}")
     public ResponseEntity<MovieUpdateDto> updateMovie(
             @PathVariable Long id,
+            @Valid
             @RequestBody MovieUpdateDto movieUpdateDto) {
         MovieUpdateDto updatedMovie = moviesService.updateMovie(id, movieUpdateDto);
         return ResponseEntity.ok(updatedMovie);
@@ -38,15 +39,12 @@ public class MoviesController {
 
     @PostMapping("/movies")
     public ResponseEntity<MovieCreateDto> createMovie(
+            @Valid
             @RequestBody
             MovieCreateDto movieCreateDto){
             MovieCreateDto createdMovie = moviesService.createMovie(movieCreateDto);
 
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(createdMovie.getId())
-                .toUri();
+        URI location = URI.create("/" + createdMovie.getId());
 
         return ResponseEntity.created(location).body(createdMovie);
     }

@@ -1,5 +1,7 @@
 package com.henry.imdb.backend.controllers;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.henry.imdb.backend.ImdbApplication;
 import com.henry.imdb.backend.config.RestExceptionHandler;
 import com.henry.imdb.backend.domain.dtos.*;
@@ -32,6 +34,7 @@ class MoviesControllerTest {
     @MockBean
     private MoviesService moviesService;
     private MockMvc mockMvc;
+    private ObjectMapper objectMapper;
 
     @BeforeEach
     void setUp() {
@@ -39,6 +42,9 @@ class MoviesControllerTest {
 
         // Assign a MovieController instance
         MoviesController moviesController = new MoviesController(moviesService);
+
+        objectMapper = new ObjectMapper();
+        objectMapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
 
         // Configure MockMvc with the controller
         mockMvc = MockMvcBuilders.standaloneSetup(moviesController)
@@ -146,9 +152,12 @@ class MoviesControllerTest {
         // Configure the mock service to return a modified movie
         when(moviesService.updateMovie(movieId, movieUpdateDto)).thenReturn(movieUpdateDto);
 
+        // Convert the DTO to JSON
+        byte[] movieUpdateDtoJson = objectMapper.writeValueAsBytes(movieUpdateDto);
+
         mockMvc.perform(MockMvcRequestBuilders.patch("/movies/{id}", movieId)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"synopsis\":\"Updated synopsis\",\"rating\":4,\"genres\":[{\"name\":\"Drama-Update\"},{\"name\":\"Crime-Update\"}]}")
+                .content(movieUpdateDtoJson)
         ).andExpect(MockMvcResultMatchers.status().isOk());
     }
 

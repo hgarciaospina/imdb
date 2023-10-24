@@ -3,38 +3,32 @@ package com.henry.imdb.backend.domain.dtos;
 import com.henry.imdb.backend.domain.models.Cast;
 import com.henry.imdb.backend.domain.models.Director;
 import com.henry.imdb.backend.domain.models.Genre;
+import jakarta.validation.constraints.*;
 import lombok.*;
 
 import java.util.List;
-import java.util.Objects;
 
-@Getter
-@Setter
+@Data
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
 
 public class MovieCreateDto {
-
+    @NotNull(message="Must have an id")
     private Long id;
+    @NotEmpty(message="Must have a title")
+    @NotNull(message="Must have a title")
+    @NotBlank(message="Must have a title")
     private String title;
+    @NotEmpty(message="Must have a synopsis")
+    @NotNull(message="Must have a synopsis")
+    @NotBlank(message="Must have a synopsis")
     private String synopsis;
+    @NotNull(message="Must have a release year")
     private Integer releaseYear;
+    @NotNull(message="Must have a rating")
+    @Min(value = 1,message="The score must be between 1 and 5.")
+    @Max(value = 5,message="The score must be between 1 and 5.")
     private Integer rating;
     private List<Director> directors;
     private List<Cast> casts;
     private List<Genre> genres;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        MovieCreateDto that = (MovieCreateDto) o;
-        return Objects.equals(id, that.id) && Objects.equals(title, that.title) && Objects.equals(synopsis, that.synopsis) && Objects.equals(releaseYear, that.releaseYear) && Objects.equals(rating, that.rating) && Objects.equals(directors, that.directors) && Objects.equals(casts, that.casts) && Objects.equals(genres, that.genres);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, title, synopsis, releaseYear, rating, directors, casts, genres);
-    }
 }
